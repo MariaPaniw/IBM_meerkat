@@ -56,6 +56,10 @@ par.sub=parameters # choose to either run all 1000 simulations or a subset (rele
 
 groups=c(1:10)# group IDs, correspond to Table S3.1
 
+### Sampling hot years where maximum temperatures are above their long-term seasonal average for > 10 y with probabilities given below
+
+extremes=c(0.1,0.45,0.75,0.95)
+ext.name=c("low","med","high","very high")
 
 for(gg in 1:length(groups)){ # first loop: GROUPS
   
@@ -64,12 +68,16 @@ for(gg in 1:length(groups)){ # first loop: GROUPS
   # Pick initial conditinos for each group
   
   dataFirst=droplevels(lh[lh$ResidentGroup%in%g.name,])
-  
+  for(rc in 1:length(extremes)){
   for(pu in 1:length(par.sub)){ # second loop: SIMULATIONS
     
-    years=ssample(c(1997:2014,2017,2018),30,replace=T)#randomly sample years
+    hot_or_no=sample(c(1,2),30,prob = c(extremes[rc],1-extremes[rc]),replace = T)
+    hot_or_no[hot_or_no==1]=sample(c(2015,2016),length(hot_or_no[hot_or_no==1]),replace = T)
+    hot_or_no[hot_or_no==2]=sample(c(1997:2014,2017,2018),length(hot_or_no[hot_or_no==2]),replace = T)
+    
+    years=hot_or_no
     years=rep(years,each=12)
-    months=rep(c(1:12),30)
+    months=rep(c(1:12),40)
   
     print(paste("Iteration", pu))
     
@@ -624,10 +632,14 @@ for(gg in 1:length(groups)){ # first loop: GROUPS
     
     sim.data$run=par.sub[pu]
     sim.data$group=groups[gg]
+    sim.data$freq_hot=ext.name[rc]
     
     ibm.data=rbind(ibm.data,sim.data)
     
   }
+  
+    }
+  
 }
 
 
