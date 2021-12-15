@@ -19,13 +19,13 @@ GENERAL INFORMATION
 		Email: thcb@cam.ac.uk 
 
 
-3. Date of data collection:(1997-01-01 until 2019-01-01 for demographic data and Tuberculosis data) 
+3. Date of data collection: All biological data used to run the individual-based models in this work was collected 1997-01-01 until 2019-01-01 (demographic data and Tuberculosis data). Rainfall and temperature data are from 1979-2020. Future projections of temperature and rainfall are deposited at 10.6084/m9.figshare.16794001.  
 
 4. Geographic location of data collection: Kuruman River Reserve, South Africa (KRR, 26°58’S, 21°49’E)
 
 5. Information about funding sources that supported the collection of the data: 
 
-European Research Council Advanced Grant (No 742808 and No 294494); MAVA Foundation
+For biological data: European Research Council Advanced Grant (No 742808 and No 294494); MAVA Foundation
 
 
 SHARING/ACCESS INFORMATION
@@ -38,32 +38,33 @@ SHARING/ACCESS INFORMATION
 
 4. Links/relationships to ancillary data sets: NA
 
-5. Was data derived from another source? NO
+5. Was data derived from another source? Yes
+
+	Sources (for climate data): https://esgf-node.llnl.gov/projects/cmip5/		
 
 6. Recommended citation for this dataset: 
 
-Paniw, M., de la Riva, E. G., Lloret, F. (2021). Data from: Demographic traits improve predictions of spatiotemporal changes in community resilience to drought. Zenodo. https://doi.org/10.5061/dryad.xwdbrv1cn
+Paniw, M., Duncan, C., Groenewoud, F., Drewe, J.A., Manser, M., Ozgul, A., Clutton-Brock, T. (2021). Data from: Higher temperature extremes exacerbate negative disease effects in a social mammal. Zenodo. Xxxx
 
 
 DATA & FILE OVERVIEW
 
 1. File List: 
 
-funcTraits.csv: species-specific functional traits for shrubs
-demoTraits.csv: species-specific demographic traits for shrubs 
-speciesCover.csv: proportional cover of shrub species in 18 plots across 8 time periods 
-plotCover.csv: total plant cover per plot 
-seed_flower.csv: raw data to calculate minimum size at flowering (considered a demographic trait) 
+GAMS: folder containing the most parsimonious generalised additive models (GAMs - saved as R data files) describing stage-specific meerkat demographic rates. 
+vitalRatesPred.pdf: Plots of predictions from the the most parsimonious GAMs
+Age.mass.domM.csv: averages ages and masses of dominant meerkat males per month and year (averaged over all individuals and groups) 
+init_group_comp.csv: initial composition of 10 meerkat groups used to initialise IBM simulations 
+past.rain.temp.csv: standardised rainfall and mean maximum temperature deviations per month and year used to fit demographic-rate GAMs
+rainfall_GPCP_1979_2020: raw rainfall values for the study site obtained from https://psl.noaa.gov/data/gridded/data.gpcp.html
+tempNOAA_CPC_1979_2020: raw maximum temperature values for the study site obtained from https://psl.noaa.gov/data/gridded/data.cpc.globaltemp.html
+gcm_output.csv:  projections of changes in the frequency of prolonged temperature extremes for different Global Circulation Models - where GCM outputs at the closest grid point to study location were used
+gcm_output_2grid_point_interpol.csv:  projections of changes in the frequency of prolonged temperature extremes for different Global Circulation Models - where GCM outputs at the two closest grid points to study location were used (averaged) 
 
-plot_pca.R: R script to plot distributions of community-weighted demographic and functional traits in PCA space 
+meerkat_group_IBM_baseline.R: Implements an individual-based model (IBM) scaling from individual and stage-specific vital rates to groups dynamics under climate TB interactions (assuming observed climate)
+meerkat_group_IBM_scen_extreme.R: Implements an individual-based model (IBM) scaling from individual and stage-specific vital rates to groups dynamics under climate TB interactions (assuming increased likelihood of extremely hot years)
+meerkat_gcm_risks.R: Implements risk analyses of future prolonged temperature extremes for different Global Circulation Models.
 
-resilience_analysis_traits.R: R script to analyse different community resilience measures as functions of individual community weighted demographic or functional traits
-
-plot_resilience_traits.R: R script to plot different community resilience measures as functions of individual community weighted demographic or functional traits
-
-resilience_analysis_PCA.R: R script to analyse and plot different community resilience measures as functions of PCA space describing community weighted demographic or functional traits jointly
-
-resilience_analysis_PCA_alternative.R: same as above but allowing for more PCA axes to be modelled
 
 2. Relationship between files, if important: The .csv files are necessary to run the .R scripts
 
@@ -79,130 +80,138 @@ METHODOLOGICAL INFORMATION
 
 1. Description of methods used for collection/generation of data: 
 
-Quantifying community composition
+These data support a study that parametrised an individual-based model (IBM) using data from a population of habituated, wild meerkat groups around the Kuruman River Reserve, South Africa. During weekly visits, data on birth, death, emigration, reproductive condition, body mass, and social status were collected from individually tagged meerkats. We used the individual-level data of 1,194 females and 1,497 males from 85 groups to generate monthly, discrete-step censuses of individuals between January 15, 1997 and December 15, 2018.
 
-In order to assess community composition before, during, and after a severe drought event in DoÃ±ana National Park, 18 permanent plots of 25 m2 (5 Ã— 5 m) were established in November 2007 (two years after the drought) on a gradient of drought impact. The plots were located at three sites (with six plots per site): Raposo (N 37Âº0â€²2â€³, W 6Âº30â€²20â€³; at 18 m a.s.l.), MarquÃ©s (N 37Âº0â€²45â€³, W 6Âº31â€²50â€³; 21 m a.s.l), and Ojillo (N 36Âº59â€²40â€³, W 6Âº30â€²50â€³; 30 m a.s.l.). To avoid spatial autocorrelation, all plots were separated by at least 50 m from each other. Species plant cover was estimated from contacts with branches along transects within plots; these contacts were divided into two categories corresponding to living or dead canopy. Dry organs with signs of old decay (stumps, decomposed stems, branches without thin tips) were excluded. Thus, canopy prior to the episode was considered as the sum of living and dead (i.e., dry) plant canopy in 2007. Relative abundance of each species per plot in years after the extreme drought was calculated as the proportion of their contacts of living canopy relative to the sum of the contacts of living canopy of all species. Similarly, the total vegetation cover per plot was calculated as the summed contacts of living canopy of all species. Relative abundances previous to the drought were calculated as the sum of the living and dead canopy of 2007 of each species relative to the sum of the living and dead canopy of 2007 for all species.
+Interannual deviations from the seasonal means in rainfall and temperature were calculated from long-term gauge and satellite data, obtained from NOAA’s Climate Prediction Center (CPC). To calculate monthly deviations of weather used in demographic-rate models, we first obtained total daily rainfall and the mean of the maximum daily temperature of the 1.5 months prior to each census. For both variables, we then created standardized deviations from monthly means. 
 
-Demographic traits
-
-We obtained four demographic traits for each plant species encountered in the sampling plots: age at first reproduction (AgeFR), maximum longevity (L), minimum size at first reproduction (SizeFR), and ratio of adults to recruits (R/A). To calculate the first three traits for each species, 50 plants growing near the plots were randomly selected in June, 2019, in vegetation patches without signs of drought-induced impact. We estimated plant age from yearly growth scars in the main shoots. We calculated age at first reproduction from inverse prediction (Probability of not flowering = 0.9) obtained from the logistic nominal regression between reproduction stage and plant age following the standard procedure. We obtained minimum size at first reproduction using receiver operating characteristic (ROC) curves. Lastly, we approximated maximum longevity as the 90th percentile of estimated age from yearly growth scales in the 50 plants growing near the plots in patches not impacted by drought; since scars disappear in older plants, 5 to 10 years age intervals - depending on speciesâ€™ growth form and size - were added to the older scars in larger plants. We calculated ratios of recruits to adults (R/A) from data collected in the years 2007, 2008, 2013 and 2019. Data included the total number of juvenile non-reproductive plants (recruits) and the total number of adults of each species found in plots with low drought impact (6 plots).
-
-Functional traits
-
-We calculated community-weighted means of eight above- and two below-ground traits, which are among the most commonly used to describe plant functional types and have previously been obtained in the study plots in late spring 2013. Above-ground functional traits included plant height (Phg), leaf area per unit of leaf dry mass (SLA), leaf dry matter content (LDMC), stem dry matter content (SDMC), leaf nitrogen concentration (LNC), leaf chlorophyll concentration (LChl), isotopic carbon fraction (Î´13C), and seed mass (Smass). Below-ground traits included specific root area (SRA) and root dry matter content (RDMC).
+In order to assess how likely our projections using observed weather trends (i.e., sampling years with increasingly more extreme temperature deviations) are under projected climate change from global circulation models, we obtained future estimates of maximum temperatures from the Coupled Model Intercomparison Project 5 (CMIP5) used by the Intergovernmental Panel on Climate Change (IPCC). All data were freely available online at the World Climate Research Programme (https://esgf-node.llnl.gov/projects/cmip5/). The CMIP5 provides projections from a suite of global circulation models (GCMs). These GCMs produce climate projections for four atmospheric greenhouse gas Representative Concentration Pathways (RCPs): one high pathway with radiative forcing up to 8.5 Watts per square meter (Wm^2) by 2100 (RCP 8.5), two intermediate pathways (RCP 4.5 and RCP 6.0), and one low pathway (RCP 2.6). We also obtained reconstructed historical simulations (1997-2005). 
 
 
 2. Methods for processing the data: 
 
-All data were processed in R; for functional traits, see additionally https://doi.org/10.1093/jpe/rtw027
+All data were processed in R
 
 3. Instrument- or software-specific information needed to interpret the data: 
 
-R statistical software, version 4.0.0 (and packages as described in the R scripts)
+R statistical software, version 4.0.1 (and packages as described in the R scripts)
 
 4. Standards and calibration information, if appropriate: 
 
 5. Environmental/experimental conditions: NA
 
-6. Describe any quality-assurance procedures performed on the data: All R scripts are fully commented and have been checked; all raw data was quality-checked by F. Lloret and E. De la Riva.
+6. Describe any quality-assurance procedures performed on the data: All R scripts are fully commented and have been checked; all raw data was quality-checked at the study site by data managers.
 
-7. People involved with sample collection, processing, analysis and/or submission: I. Granzow, J. Margalef, M. Angeles PÃ©rez, and T. Quirante, M. Paniw, F. Lloret, E. De la Riva 
+7. People involved with sample collection, processing, analysis and/or submission: All authors + volunteers at Kalahari Meerkat Project (https://kalahariresearchcentre.org/) 
 
 
-DATA-SPECIFIC INFORMATION FOR: [funcTraits.csv]
+DATA-SPECIFIC INFORMATION FOR: [age.mass.domM.csv]
 
-1. Number of variables: 11
+1. Number of variables: 4
 
-2. Number of cases/rows: 11
+2. Number of cases/rows: 262
 
 3. Variable List: 
 
-Species: Latin species name
-LDMC: Leaf dry matter content
-leaf_chlo: Leaf chlorophyll
-SLA: specific leaf area
-N_leaf: Leaf nitrogen content
-C13: Isotopic carbon fraction
-SRA_root: specific root area
-RDMC: Root dry matter content
-Seed size: seed mass
-Height: plant height
-dry_matter: stem dry matter content  
+month: numeric 1-12
+year: numeric 1997-2018
+AgeMonth: age in months
+mass: mass as log grams
+
 
 4. Missing data codes: NA
 
 5. Specialized formats or other abbreviations used: no
 
 
-DATA-SPECIFIC INFORMATION FOR: [demoTraits.csv]
+DATA-SPECIFIC INFORMATION FOR: [init_group_comp.csv]
 
-1. Number of variables: 3
+1. Number of variables: 9
 
-2. Number of cases/rows: 11
+2. Number of cases/rows: 123
 
 3. Variable List: 
 
-Species: Latin species name
-ageFirstRep: plant age at first reproduction 
-Longevity90p: plant longevity
-r_a_ratio: ratio of recruits to adults
+ResidentGroup: group identifier
+ID: meerkat individual ID
+Sex: female or male 
+AgeMonths: age in months
+stage: life-cycle stage (P-pup; J-juveline; S-subordinate; H-helper; D-dominant)
+pregCat: pregnancy state of females (np - not pregnant; 1-one-month pregnant; 2-two-month pregnant; birth-with litter of pups) 
+mass: mass as log grams
+group.size.sub: number of individuals > six months of age in the group
+immig: whether the male is an immigrant or not 
 
 4. Missing data codes: NA
 
 5. Specialized formats or other abbreviations used: no
 
 
-DATA-SPECIFIC INFORMATION FOR: [speciesCover.csv]
+DATA-SPECIFIC INFORMATION FOR: [past.rain.temp.csv]
 
-1. Number of variables: 11
+1. Number of variables: 4
 
-2. Number of cases/rows: 126
+2. Number of cases/rows: 264
 
 3. Variable List: 
 
-Plot: one of 18 plots pre drought and in years following drought
-Remaining variables are Latin species names
+month: numeric 1-12
+year: numeric 1997-2018
+rainSD: standardised deviations from long-term (1997-2018) averages of total rainfall in the past 1.5 months
+tempSD: standardised deviations from long-term (1997-2018) averages of mean maximum temperatures in the past 1.5 months
 
 4. Missing data codes: NA
 
 5. Specialized formats or other abbreviations used: no
 
-
-DATA-SPECIFIC INFORMATION FOR: [plotCover.csv]
-
-1. Number of variables: 11
-
-2. Number of cases/rows: 18
-
-3. Variable List: 
-
-Plot: plot name
-dieOffCat: severity of drought die off
-Total die-off: percentage die off of cover after drought
-
-Remaining columns depict total cover across different time periods
-
-4. Missing data codes: NA
-
-5. Specialized formats or other abbreviations used: no
-
-
-DATA-SPECIFIC INFORMATION FOR: [seed_flower.csv]
+DATA-SPECIFIC INFORMATION FOR: [gcm_output.csv] [gcm_output_2grid_point_interpol.csv]
 
 1. Number of variables: 6
 
-2. Number of cases/rows: 553
+2. Number of cases/rows: 720
 
 3. Variable List: 
 
-Diameter(cm): plant diameter in cm
-H (cm): plant height in cm
-Flower: flowering (Y) or not (N)
-Green(%): percent green tissue on plant
-caAge (y): estimate of plant age
-Species: species name
+hist: proportion of GCMs where historical maximum temperatures (1997-2018) are above their long-term average for at certain number of month (see below)
+proj: proportion of GCMs where projected maximum temperatures (mid-century or end-century) are above their long-term average for at certain number of month (see below)
+run: whether projections for midcentury (2041-2061) or end century (2079-2100) were run
+rcp: Relative greenhouse gas concentration pathway corresponding to each GCM
+gcm: short name of global circulation model 
+cutoff: number of month with above-average maximum temperatures 
 
-Remaining columns depict total cover across different time periods
+4. Missing data codes: NA
+
+5. Specialized formats or other abbreviations used: no
+
+
+DATA-SPECIFIC INFORMATION FOR: [rainfall_GPCP_1979_2020.csv]
+
+1. Number of variables: 4
+
+2. Number of cases/rows: 2048
+
+3. Variable List: 
+
+lon: longitud
+lat: latitude 
+date: date
+rain: mean monthly rainfall (mm)
+
+4. Missing data codes: NA
+
+5. Specialized formats or other abbreviations used: no
+
+DATA-SPECIFIC INFORMATION FOR: [tempNOAA_CPC_1979_2020.csv]
+
+1. Number of variables: 4
+
+2. Number of cases/rows: 15341
+
+3. Variable List: 
+
+lon: longitud
+lat: latitude 
+temp: daily maximum temperatures (ºC)
+date: date
 
 4. Missing data codes: NA
 
