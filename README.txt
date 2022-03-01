@@ -44,7 +44,7 @@ SHARING/ACCESS INFORMATION
 
 6. Recommended citation for this dataset: 
 
-Paniw, M., Duncan, C., Groenewoud, F., Drewe, J.A., Manser, M., Ozgul, A., Clutton-Brock, T. (2021). Data from: Higher temperature extremes exacerbate negative disease effects in a social mammal. Zenodo. https://zenodo.org/badge/latestdoi/329352657
+Paniw, M., Duncan, C., Groenewoud, F., Drewe, J.A., Manser, M., Ozgul, A., Clutton-Brock, T. (2021). Data from: Higher temperature extremes exacerbate negative disease effects in a social mammal. Zenodo. https://doi.org/10.5281/zenodo.5784649
 
 
 DATA & FILE OVERVIEW
