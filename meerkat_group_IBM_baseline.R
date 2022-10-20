@@ -67,7 +67,7 @@ for(gg in 1:length(groups)){ # first loop: GROUPS
   
   for(pu in 1:length(par.sub)){ # second loop: SIMULATIONS
     
-    years=ssample(c(1997:2014,2017,2018),30,replace=T)#randomly sample years
+    years=sample(c(1997:2014,2017,2018),30,replace=T)#randomly sample years
     years=rep(years,each=12)
     months=rep(c(1:12),30)
   
